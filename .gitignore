@@ -3,3 +3,8 @@ node_modules/*
 package/*
 .tern-port
 play
+
+test/*.js
+test/*.map
+test/*.d.ts
+.vscode

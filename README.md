@@ -1,5 +1,9 @@
 ## Getting Started
 
+This fork of agi-node replace fiber by Promises to make the module consistent with the async/await design pattern.
+Also defines typescript's types.
+
+
 ### 1. Usage
 
 ``` bash
@@ -12,28 +16,27 @@ var AGIServer = require('agi-node').AGIServer;
 //var AsyncAGIServer = require('agi-node').AsyncAGIServer;
 //var conn = new require('asterisk-manager')(5038, 'localhost', 'asterisk', 'astpass', true);
 
-function fakeCallback(param, callback) {
-  setTimeout(function () {
-    callback(null, param);
-  }, 2000);
-}
 
-function testScript(channel) {
+
+async function testScript(channel) {
   console.log('Script got call %s -> %s', channel.request.callerid, channel.request.extension);
 
-  var answerReply = channel.answer();
+  var answerReply = await channel.answer();
   console.log('ANSWER', answerReply);
 
-  console.log('CHANNEL STATUS', channel.channelStatus());
-  console.log('GET UNIQUEID', channel.getVariable('UNIQUEID'));
-  console.log('GET JUNK', channel.getVariable('JUNK'));
+  console.log('CHANNEL STATUS', await channel.channelStatus());
+  console.log('GET UNIQUEID', await channel.getVariable('UNIQUEID'));
+  console.log('GET JUNK', await channel.getVariable('JUNK'));
 
   console.log('beeping in 2 seconds');
-  channel.streamFile(fakeCallback.sync(null, 'beep'));
+
+  await new Promise(resolve=> setTimeout(resolve, 2000));
+
+  await channel.streamFile("beep");
 
 
-  console.log('PLAYBACK', channel.streamFile('conf-adminmenu'));
-  console.log('PLAYBACK', channel.streamFile('conf-adminmenu'));
+  console.log('PLAYBACK', await channel.streamFile('conf-adminmenu'));
+  console.log('PLAYBACK', await channel.streamFile('conf-adminmenu'));
 }
 
 /* Async AGI Server */
@@ -48,7 +51,7 @@ var server = new AGIServer(testScript, 4573);
 
 * `AGIServer` constructor receives two parameters: a `mapper` and a `port`. If the mapper is a function it will execute that as an AGI script. If it is an object it maps script names from AGI URL to generator functions. Example: `{hello: helloScript}` will map `agi://agi_host/hello` to `helloScript`. The `port` is the AGI standard listening port (default `4573`)
 * `AsyncAGIServer` receives two parameters: a `mapper` and an AMI connection (established through `asterisk-manager`)
-* The script should exit at the very end. That means that all async operations (e.g. database lookups) need to be done using `sync` library. This is a dependency of `agi-node` and the script is executed inside a fiber, so callbacks can be put in "sync" mode (see `fakeCallback` example above and `sync` library itself at https://www.npmjs.com/package/sync).
+* Mapper function must return a void promise, all the channel methods return promise that must complete before the Mapper promise resolve.
 
 ### 2. Channel API
 
@@ -80,6 +83,7 @@ This property is an object that maps all the AGI initialization variable without
 
 #### 2.2 Channel methods
 
+All those methods returns promises.
 
 * `answer()`
 

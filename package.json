@@ -1,25 +1,26 @@
 {
   "name": "agi-node",
-  "version": "0.0.7",
+  "version": "0.0.8",
   "description": "Asterisk AGI Server",
   "main": "index.js",
+  "types": "index.d.ts",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "tsc": "./node_modules/.bin/tsc -p ./tsconfig.json",
+    "test": "node ./test/main"
   },
-  "author": "Alexandru Pirvulescu <alex@tcnbroadcasting.com>",
+  "author": "Alexandru Pirvulescu <alex@tcnbroadcasting.com>, fork by Joseph Garrone",
   "dependencies": {
-    "asterisk-manager": "^0.1.15",
-    "fibers": "^1.0.5",
-    "sprintf-js": "^1.0.2",
-    "syncho": "^0.2.3"
+    "sprintf-js": "^1.0.2"
   },
-  "directories": {
-    "example": "examples"
+  "devDependencies": {
+    "asterisk-manager": "garronej/NodeJS-AsteriskManager",
+    "chan-dongle-extended-client": "github:garronej/chan-dongle-extended-client",
+    "@types/node": "^4.0.0",
+    "typescript": "^2.2.1"
   },
-  "devDependencies": {},
   "repository": {
     "type": "git",
-    "url": "https://github.com/tcncloud/agi-node.git"
+    "url": "https://github.com/garronej/agi-node.git"
   },
   "keywords": [
     "agi",

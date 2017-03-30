@@ -1,5 +1,4 @@
 /* eslint no-var: 0*/
-/* global unescape */
 
 /* eslint no-var: 0 */
 
@@ -12,3 +11,4 @@ module.exports = {
   AGIServer: AGIServer,
   AGIChannel: AGIChannel
 };
+
