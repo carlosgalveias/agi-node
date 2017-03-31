@@ -19,14 +19,15 @@ new AsyncAGIServer(async channel => {
     var answerReply = await channel.answer();
     console.log('ANSWER', answerReply);
 
-    console.log('CHANNEL STATUS', [ await channel.channelStatus()]);
-    console.log('GET UNIQUEID', [ await channel.getVariable('UNIQUEID')]);
+    console.log('CHANNEL STATUS', await channel.channelStatus());
+    console.log('GET UNIQUEID', await channel.getVariable('UNIQUEID'));
 
     console.log('beeping in 2 seconds');
 
-    await new Promise( resolve => setTimeout(resolve,2000));
+    await new Promise<void>( resolve => setTimeout(resolve, 2000));
 
     await channel.streamFile("beep");
+
 
     console.log('PLAYBACK', await channel.streamFile('conf-adminmenu'));
     //console.log('PLAYBACK', await channel.streamFile('conf-adminmenu'));
