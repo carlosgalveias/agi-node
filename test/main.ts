@@ -1,6 +1,6 @@
 import * as agi from "..";
 
-const { AsyncAGIServer } = agi;
+const { AsyncAGIServer, ChannelStatus } = agi;
 
 import * as AstMan from "asterisk-manager";
 
@@ -19,7 +19,7 @@ new AsyncAGIServer(async channel => {
     var answerReply = await channel.answer();
     console.log('ANSWER', answerReply);
 
-    console.log('CHANNEL STATUS', await channel.channelStatus());
+    console.log('CHANNEL STATUS', ChannelStatus[await channel.channelStatus()]);
     console.log('GET UNIQUEID', await channel.getVariable('UNIQUEID'));
 
     console.log('beeping in 2 seconds');
@@ -35,3 +35,4 @@ new AsyncAGIServer(async channel => {
     console.log("Script return");
 
 }, ami);
+

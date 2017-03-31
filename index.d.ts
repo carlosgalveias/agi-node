@@ -27,7 +27,7 @@ export class AGIChannel {
     request: AGIRequest;
     cmdId: number;
     answer(): Promise<number>;
-    channelStatus(): Promise<number>;
+    channelStatus(): Promise<ChannelStatus>;
     continueAt(context: string, extension?: string, priority?: number): Promise<void>;
     exec(applicationName: string, applicationParameters): Promise<any>;
     getData(file: string, timeout: number, maxDigits: number): Promise<any>;
@@ -74,4 +74,15 @@ export class AGIServer {
         mapper: Mapper | { [scriptName: string]: Mapper },
         port: number
     );
+}
+
+export enum ChannelStatus {
+    DOWN_AVAILABLE= 0,
+    DOWN_RESERVED= 1,
+    OFF_HOOK= 2,
+    DIGITS_DIALED= 3,
+    LINE_RINGING= 4,
+    REMOTE_END_RINGING= 5,
+    LINE_UP= 6,
+    LINE_BUSY= 7
 }
